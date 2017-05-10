@@ -1,0 +1,24 @@
+		AREA asn3_1, CODE, READWRITE
+		ENTRY
+		ADR R1, STRING1					; r1 points to string1
+		ADR R2, STRING2					; r2 points to string2
+		ADR R3, STRING3					; r3 points to string3
+PART1	LDRB R0, [R1], #1				; Copy from string1 to string3 one by one
+		STRB R0, [R3], #1				;
+		CMP R0, #0x00					; Until the the end of the string
+		BNE PART1						; If it is not the end, go back
+		
+PART2	LDRB R0, [R2], #1				; Same as above for string2
+		STRB R0, [R3], #1				;
+		CMP R0, #0x00					;
+		BNE PART2						;
+		
+		LDR R10, =1						; r10 is to show that the program is completed
+DONE 	B DONE							; Done
+		
+STRING1 DCB "This is a test string1" 		;String1
+EoS1 	DCB 0x00 						;end of string1
+STRING2 DCB "This is a test string2" 		;String
+EoS2 	DCB 0x00 						;end of string2
+STRING3 space 0xFF
+		END

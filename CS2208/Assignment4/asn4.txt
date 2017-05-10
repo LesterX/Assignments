@@ -1,0 +1,54 @@
+		AREA asn4, CODE, READWRITE
+		ENTRY
+		
+		MOV SP, #0X1000		; Set up stack pointer
+		MOV FP, #0XFFFFFFFF	; Set up frame pointer
+
+MAIN	
+		SUB SP, SP, #4		; Create stack frame in main
+		STR FP, [SP]		; Push FP
+		MOV FP, SP			; FP -> base
+		SUB SP, SP, #12		; Move SP up 16 bytes
+		MOV R0, #2			; x = 2
+		STR R0, [FP, #-4]	; Put x into stack
+		MOV R0, #3			; n = 3
+		STR R0, [FP, #-8]	; Put n into stack
+		MOV R0, #1			; result = 1, which is
+							; the place to store result
+		STR R0, [FP, #-12]	; Put result right above 
+							; the two parameters
+		BL POWER			; Call POWER, save return 
+							; address in LR
+DONE	B DONE				; All done
+		
+							; In the stack
+							; the final result is 
+							; right above the 
+							; parameters
+				
+POWER	
+		SUB SP, SP, #4		; Create stack frame
+							; decrement SP
+		STR FP, [SP]		; Push FP
+		MOV FP, SP			; FP -> base
+		SUB SP, SP, #16		; Move SP up 16 bytes
+		STR LR, [FP, #-4]	; Put LR into stack
+		LDR R0, [FP, #12]	; Get x from previous frame
+		STR R0, [FP, #-8]	; Put x into stack
+		LDR R1, [FP, #4]	; Get result from previous frame
+		MUL R1, R0, R1		; result = result * x
+		STR R1, [FP, #-16]	; Put result into stack
+		LDR R0, [FP, #8]	; Get n from previous frame
+		SUB R0, R0, #1		; n = n - 1
+		STR R0, [FP, #-12] 	; Put n into stack
+		CMP R0, #0			; If n != 0
+		BLNE POWER			; Call recursive function
+		LDR R1, [FP, #-16]	; Update every result in
+		STR R1, [FP, #4]	; previous frames
+		LDR LR, [FP, #-4]	; Get the next return address 
+		MOV SP, FP			; Restore the SP
+		LDR FP, [SP]		;
+		ADD SP, SP, #4		;
+		MOV PC, LR			; Return
+		
+		END

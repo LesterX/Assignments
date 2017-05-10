@@ -1,0 +1,36 @@
+﻿		AREA asn3_2, CODE, READWRITE
+		ENTRY
+		ADR R1, STRING1						; r1 points to string1
+		ADR R2, STRING2						; r2 points to string2
+		
+		LDRB R3, [R1]						; Use r3 to check if
+		CMP R3, #'t'						; the first word
+		LDRBEQ R3, [R1, #1]					; is 'the'
+		CMPEQ R3, #'h'						; If yes
+		LDRBEQ R3, [R1, #2]					; then add #3 
+		CMPEQ R3, #'e'						; to r1 to
+		ADDEQ R1, #3						; skip 'the'
+		
+COPY	LDRB R0, [R1], #1					; After the first word
+		CMP R0, #'t'						; jump to the check part
+		BLEQ THE							; once 't' is found
+		STRB R0, [R2], #1					; store the char to string2
+		CMP R0, #0x00						; If it is not the end of string
+		BNE COPY							; go back
+		B DONE								; If it is the end, it is done
+		
+THE		LDRB R3, [R1, #-2]					; Check 
+		CMP R3, #' '						; previous char is space?
+		LDRBEQ R3, [R1]						; if yes
+		CMPEQ R3, #'h'						; next char is 'h'?
+		LDRBEQ R3, [R1, #1]					; if yes
+		CMPEQ R3, #'e'						; next char is 'e'?
+		ADDEQ R1, #3						; if yes, 'the' is found
+		B COPY								; skip 'the' and go back
+	
+DONE	B DONE								;
+
+STRING1 DCB "the and the man said they must go" ;String1
+EoS 	DCB 0x00 							;end of string1
+STRING2 space 0xFF
+		END

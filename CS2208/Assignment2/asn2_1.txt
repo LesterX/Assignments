@@ -1,0 +1,38 @@
+AREA asn2_1, CODE, READWRITE
+		ENTRY
+		LDR R12, =6			;	Set R12 to be the loop counter
+		ADR R1, UPC			;	Load the address of UPC to R1
+LOOP	
+		LDRB R2, [R1], #1 		;	Load the next byte (odd) of UPC into R2
+		SUB R2, R2, #0x30		;	Get the real number
+		LDRB R3, [R1], #1		;	Load the next byte (even) of UPC into R3
+		SUB R3, R3, #0x30		;	Get the real number
+		ADD R4, R4, R2 			;	Add the number in R2 to R4
+		CMP R12, #1			;	Add the number in R3 to	R5 unless it is the last digit 
+		BEQ LAST			;	If it is the last digit, skip the add part
+		ADD R5, R5, R3			;	Add 
+LAST		SUBS R12, R12, #1		;	Loop counter --
+		BNE LOOP			;	If loop counter equals 0, end the loop
+		
+		LDR R7, =3			;	Use R7 as a temporary place to store some number
+		MUL R8, R4, R7			;	Multiply the first sum by 3 
+		ADD R6, R8, R5			;	Add the result of the previous instruction to R5 and set the result to R6
+		SUB R6, R6, #1			;   	Subtract 1 from the sum
+MOD		
+		SUB R6, R6, #10			;	Keep subtracting 10 until it is smaller than 10
+		CMP R6, #10			;	Compare R6 with 10
+		BMI NEXT			;	If the result is smaller than 10, end the mod part
+		B MOD				;	If the result is still greater or equal to 10, go back to MOD	 
+		
+NEXT		LDR R7, =9			;	Use R7 as a temporary place to store some number
+		SUB R6, R7, R6			;	Subtract the value of R6 from 9 
+		
+COM		CMP R6, R3			;	Compare R6 with R3, which is the last digit of 							;	the UPC
+		BEQ YES				;	If R6 equal to R3, go to YES
+NO		LDR R0, =2			;	If R6 does not equal to R3, it is not a valid UPC
+		B DONE				;	Go to the end
+YES		LDR R0, =1			;	It is valid
+
+DONE	B DONE					;	All done!	
+UPC		DCB "013800150738"		;	UPC string
+		END		

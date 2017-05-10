@@ -1,0 +1,51 @@
+﻿		AREA asn3_3, CODE, READWRITE
+		ENTRY
+		LDR R0, = 3		; Load r0
+		
+		BL FUNC1		; Call function1
+		MOV R1, R0, LSL #1; Double r0 to r1
+		B DONE			; Go to the end
+		
+FUNC1	STR R2, BACKUP2	; Back up the registers to be used
+		STR R3, BACKUP3	;
+		STR R4, BACKUP4	;
+		STR R5, BACKUP5	;
+		STR R6, BACKUP6	;
+		STR R7, BACKUP7	;
+		LDR R2, a		; Get the parameters abcd 
+		LDR R3, b		;
+		LDR R4, c		;
+		LDR R5, d		;
+MULTb	MUL R3, R0, R3	; Calculate bx
+		MOV R7, R0		; Copy r0 to r7
+		MOV R6, #1 		; Set the loop counter
+SQUARE	ADD R7, R7, R0	; Calculate x square by loops
+		ADD R6, R6, #1	; Counter ++
+		CMP R6, R0		; If counter == x, get out 
+		BNE SQUARE		; 
+		MUL R0, R7, R2	; Calculate a * (x square)
+		ADD R0, R0, R3	; Calculate a*(x2) + b*x
+		ADD R0, R0, R4	; Add c
+		CMP R0, R5		; If > d
+		MOVGT R0, R5	; Clip to d
+		LDR R2, BACKUP2	; Recover the values of the registers
+		LDR R3, BACKUP3	;
+		LDR R4, BACKUP4	;
+		LDR R5, BACKUP5	;
+		LDR R6, BACKUP6	;
+		LDR R7, BACKUP7	;
+		MOV PC, LR		; End the function
+		
+DONE	B DONE			;
+		
+a		DCD 5			;
+b 		DCD 6			;
+c       DCD 7			;	
+d 		DCD 90			;
+BACKUP2 DCD 0x00000000	; Back up locations in memory
+BACKUP3 DCD 0x00000000	;
+BACKUP4 DCD 0x00000000	;
+BACKUP5 DCD 0x00000000	;
+BACKUP6 DCD 0x00000000	;
+BACKUP7 DCD 0x00000000	;
+		END
