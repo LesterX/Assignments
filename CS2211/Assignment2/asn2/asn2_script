@@ -1,0 +1,40 @@
+Script started on Fri Feb 03 19:07:15 2017
+%vim asn[K[K[K[K[K[Kgcc asn2.c -o asn2[K[K2[K[K2
+%./a2
+Enter your command 'number' for conversion between
+1 Kilogram and Pound
+2 Litre and Gallon
+3 Centimetre and Inch
+4 Celsius and Fahrenheit
+5 Quit
+1
+Enter K 'kilogram to pound' or P 'pound to kilogram': K
+Enter kilogram: 1
+1.000000 kilograms = 2.204623 pounds
+--------------------------------
+
+Enter your command 'number' for conversion between
+1 Kilogram and Pound
+2 Litre and Gallon
+3 Centimetre and Inch
+4 Celsius and Fahrenheit
+5 Quit
+4
+Enter C 'Celcius to Fahrenheit' or F 'Fahrenheit to Celcius': F
+Enter Fahrenheit: 80
+80.000000 F = 26.666666 C
+--------------------------------
+
+Enter your command 'number' for conversion between
+1 Kilogram and Pound
+2 Litre and Gallon
+3 Centimetre and Inch
+4 Celsius and Fahrenheit
+5 Quit
+5
+
+End
+%exit
+exit
+
+script done on Fri Feb 03 19:08:26 2017

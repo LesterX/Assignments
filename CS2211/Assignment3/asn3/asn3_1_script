@@ -1,0 +1,30 @@
+Script started on Tue Feb 21 22:21:04 2017
+%asn3[K[K[K[K./asn3_1
+Enter a simple arithmetic expression: 5
+ The result is 5.000000
+Do you want to continue? Y/N
+y
+Enter a simple arithmetic expression: 4   + 3
+ The result is 7.000000
+Do you want to continue? Y/N
+y
+Enter a simple arithmetic expression: 2.6 - 2 - 1.5 + 10
+ The result is 9.100000
+Do you want to continue? Y/N
+y
+Enter a simple arithmetic expression: 3.5 -       -2.0 - 2 + 1.5 + 10 - 100
+ The result is -92.500000
+Do you want to continue? Y/N
+Y
+Enter a simple arithmetic expression: 3.5 - -1.5 + 10 - 3,0  .0 + 2 + 2 3
+ The result is 17.000000
+Do you want to continue? Y/N
+y
+Enter a simple arithmetic expression: 3.1 5 - 1.5 *10   10 - 2.0
+Invalid operator.
+ The result is 0.000000
+Do you want to continue? Y/N
+%exit
+exit
+
+script done on Tue Feb 21 22:22:56 2017
